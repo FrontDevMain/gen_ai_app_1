@@ -8,10 +8,12 @@ import VerifySignUpOtp from 'src/pages/auth/VerifySignUpOtp';
 import AuthSignUpDetails from 'src/pages/auth/AuthSignUpDetails';
 import VerifyForgotPasswordOtp from 'src/pages/auth/VerifyForgotPasswordOtp';
 import AuthNewPassword from 'src/pages/auth/AuthNewPassword';
+import DashboardLayout from './DashboardLayout';
 
 function Router() {
   return (
     <Routes>
+      <Route path="/auth" element={<DashboardLayout />} />
       <Route path="/" element={<GuestLayout />}>
         <Route index element={<AuthLoginForm />} />
         <Route path="/signup" element={<AuthSignUp />} />
