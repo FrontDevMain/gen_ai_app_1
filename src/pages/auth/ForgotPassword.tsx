@@ -78,6 +78,18 @@ function ForgotPassword() {
         <Button fullWidth size="medium" type="submit" variant="contained">
           Continue
         </Button>
+        <Typography textAlign={'center'} my={2}>
+          Already have an account?
+          <Link
+            variant="body2"
+            color="primary"
+            underline="none"
+            sx={{ cursor: 'pointer' }}
+            onClick={() => navigate('/')}
+          >
+            Login
+          </Link>
+        </Typography>
       </Stack>
     </FormProvider>
   );

@@ -1,4 +1,4 @@
-import { Box, Stack, styled, Typography } from '@mui/material';
+import { Box, Stack, styled, Typography, useTheme } from '@mui/material';
 import upImage from '../assets/login/loginUpBg.svg';
 import downImage from '../assets/login/loginDownBg.svg';
 import centerImage from '../assets/login/loginCenterBg.svg';
@@ -7,14 +7,14 @@ import { Outlet } from 'react-router-dom';
 import Reversed from '../assets/logo/Reversed.svg';
 
 export default function GuestLayout() {
+  const theme = useTheme();
   const StyledCard = styled('div')(({ theme }) => ({
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: 15,
-    padding: 20,
+    height: 'auto',
     width: '100%',
     maxWidth: 450,
     margin: 'auto',
   }));
+
   return (
     <Box
       sx={{
@@ -44,22 +44,27 @@ export default function GuestLayout() {
         }}
       >
         <Stack
-          sx={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}
+          sx={{
+            height: '90%',
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'scroll',
+            p: 5,
+          }}
         >
-          <Box sx={{ width: '100%', position: 'relative' }}>
-            <img
-              src={user}
-              style={{
-                position: 'absolute',
-                top: -100,
-                left: '50%',
-                transform: 'translate(-50%, 0px)',
+          <StyledCard>
+            <img src={user} style={{ margin: '20px auto', height: '100px' }} />
+            <Box
+              sx={{
+                backgroundColor: theme.palette.background.paper,
+                borderRadius: 2,
+                padding: 2,
               }}
-            />
-            <StyledCard>
+            >
               <Outlet />
-            </StyledCard>
-          </Box>
+            </Box>
+          </StyledCard>
         </Stack>
       </Box>
     </Box>

@@ -16,15 +16,17 @@ import FormProvider, { RHFTextField } from '../../components/hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import upImage from '../assets/login/loginUpBg.svg';
-import downImage from '../assets/login/loginDownBg.svg';
-import centerImage from '../assets/login/loginCenterBg.svg';
-import user from '../assets/login/user.svg';
-import styled from '@emotion/styled';
+import google from '../../assets/login/google.svg.svg';
+import fb from '../../assets/login/fb.svg.svg';
 
 type FormValuesProps = {
   email: string;
   password: string;
+};
+
+const IconStyle = {
+  height: 50,
+  cursor: 'pointer',
 };
 
 function AuthLoginForm() {
@@ -133,6 +135,10 @@ function AuthLoginForm() {
       </Typography>
 
       <Divider>Or continue with</Divider>
+      <Stack my={1} flexDirection={'row'} gap={1} justifyContent={'center'}>
+        <img src={google} alt="login with google" style={IconStyle} />
+        <img src={fb} alt="login with facebook" style={IconStyle} />
+      </Stack>
     </FormProvider>
   );
 }
