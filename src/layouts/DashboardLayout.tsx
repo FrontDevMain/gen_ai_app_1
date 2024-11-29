@@ -15,11 +15,16 @@ import {
   IconButton,
   Stack,
   useTheme,
+  Divider,
 } from '@mui/material';
 import MenuIcon from '@mui/material';
 import Logo from 'src/components/logo';
 import Navbar from './navbar/Navbar';
 import ChangeMode from './navbar/ChangeMode';
+import AccountPopover from './navbar/AccountPopover';
+import MainDashboard from 'src/pages/dashboard/MainDashboard';
+import HeaderDashboard from 'src/pages/dashboard/HeaderDashboard';
+import SearchBar from 'src/pages/dashboard/SearchBar';
 
 const DashboardLayout = () => {
   const theme = useTheme();
@@ -62,8 +67,10 @@ const DashboardLayout = () => {
               <Logo />
               <Navbar />
             </Box>
-
-            <ChangeMode />
+            <Box>
+              <AccountPopover />
+              <ChangeMode />
+            </Box>
           </Stack>
         </Box>
       </Drawer>
@@ -107,20 +114,7 @@ const DashboardLayout = () => {
             backgroundColor: theme.palette.background.neutral,
           }}
         >
-          <Card sx={{ maxWidth: '600px', margin: 'auto' }}>
-            <CardContent>
-              <Typography gutterBottom variant="body1">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                Ipsum has been the industry's standard dummy text ever since the 1500s.
-              </Typography>
-            </CardContent>
-            <CardMedia
-              component="img"
-              height="140"
-              image="https://via.placeholder.com/600x140"
-              alt="Placeholder Image"
-            />
-          </Card>
+          <MainDashboard />
         </Box>
       </Box>
     </Box>

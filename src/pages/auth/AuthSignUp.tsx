@@ -1,12 +1,4 @@
-import {
-  Button,
-  Divider,
-  IconButton,
-  InputAdornment,
-  Link,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { IconButton, InputAdornment, Link, Stack, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -14,10 +6,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormProvider, { RHFTextField } from '../../components/hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import fetcher from 'src/utils/fetcher';
+import { LoadingButton } from '@mui/lab';
 
 type FormValuesProps = {
   email: string;
   password: string;
+  confirmPassword: string;
 };
 
 function AuthSignUp() {
@@ -49,6 +44,7 @@ function AuthSignUp() {
   const defaultValues = {
     email: '',
     password: '',
+    confirmPassword: '',
   };
 
   const methods = useForm<FormValuesProps>({
@@ -63,9 +59,18 @@ function AuthSignUp() {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods;
 
-  const onSubmit = (data: FormValuesProps) => {
-    navigate('/verify-signup-otp');
-    console.log(data);
+  const onSubmit = async (data: FormValuesProps) => {
+    try {
+      const body = new URLSearchParams();
+      body.append('email', data.email);
+      body.append('password', data.password);
+      body.append('confirm_password', data.confirmPassword);
+
+      const Response = await fetcher.post('auth/signup', body);
+      navigate('/verify-signup-otp');
+    } catch (err) {
+      console.log(err.detail);
+    }
   };
 
   return (
@@ -118,9 +123,9 @@ function AuthSignUp() {
           />
         </Stack>
 
-        <Button fullWidth size="medium" type="submit" variant="contained">
+        <LoadingButton fullWidth type="submit" variant="contained" loading={isSubmitting}>
           Sign Up
-        </Button>
+        </LoadingButton>
       </Stack>
 
       <Typography textAlign={'center'} my={2}>

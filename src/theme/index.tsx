@@ -13,6 +13,7 @@ import { useSettingsContext } from '../components/settings';
 import palette from './palette';
 import typography from './typography';
 import GlobalStyles from './globalStyles';
+import ComponentsOverrides from './overrides';
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +34,8 @@ export default function ThemeProvider({ children }: Props) {
   );
 
   const theme = createTheme(themeOptions);
+
+  theme.components = ComponentsOverrides(theme);
 
   return (
     <StyledEngineProvider injectFirst>

@@ -18,6 +18,8 @@ import { useNavigate } from 'react-router-dom';
 
 import google from '../../assets/login/google.svg.svg';
 import fb from '../../assets/login/fb.svg.svg';
+import fetcher from 'src/utils/fetcher';
+import { LoadingButton } from '@mui/lab';
 
 type FormValuesProps = {
   email: string;
@@ -68,8 +70,21 @@ function AuthLoginForm() {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods;
 
-  const onSubmit = (data: FormValuesProps) => {
-    console.log(data);
+  const onSubmit = async (data: FormValuesProps) => {
+    try {
+      const body = new URLSearchParams();
+      body.append('grant_type', 'password'); // Replace if another grant type is needed
+      body.append('username', data.email);
+      body.append('password', data.password);
+      body.append('scope', ''); // Optional: Add a specific scope if required
+      body.append('client_id', 'YOUR_CLIENT_ID'); // Replace with your client ID
+      body.append('client_secret', 'YOUR_CLIENT_');
+
+      const Response = await fetcher.post('auth/login', body);
+      console.log(Response);
+    } catch (err) {
+      console.log(err.detail);
+    }
   };
 
   return (
@@ -117,9 +132,15 @@ function AuthLoginForm() {
         </Link>
       </Stack>
 
-      <Button fullWidth size="medium" type="submit" variant="contained">
+      <LoadingButton
+        fullWidth
+        size="medium"
+        type="submit"
+        variant="contained"
+        loading={isSubmitting}
+      >
         Login
-      </Button>
+      </LoadingButton>
 
       <Typography textAlign={'center'} my={2}>
         If you don’t have an account?

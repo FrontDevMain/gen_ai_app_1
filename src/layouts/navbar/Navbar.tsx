@@ -4,17 +4,15 @@ import {
   Icon,
   IconButton,
   List,
-  ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
+  Popover,
   Stack,
   styled,
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function Navbar() {
@@ -84,7 +82,13 @@ function Navbar() {
 }
 
 function NavbarItems({ item, active, setActive }: any) {
-  const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const handleOpenPopover = (event: React.MouseEvent<HTMLButtonElement>) =>
+    setAnchorEl(event.currentTarget);
+  const handleClosePopover = () => setAnchorEl(null);
+  const openPopover = Boolean(anchorEl);
+  const id = openPopover ? 'simple-popover' : undefined;
+
   const [open, setOpen] = useState(active.item == item.title);
   const handleClick = () => {
     setOpen(!open);
@@ -132,6 +136,22 @@ function NavbarItems({ item, active, setActive }: any) {
     },
   }));
 
+  const CustomList = styled(List)(({ theme }) => ({
+    padding: theme.spacing(1),
+  }));
+
+  const CustomListItemText = styled(ListItemText)(({ theme }) => ({
+    padding: '15px 10px',
+    width: 200,
+    borderRadius: 5,
+    color: 'text.secondary',
+    cursor: 'pointer',
+    '&:hover': {
+      color: theme.palette.background.default,
+      backgroundColor: theme.palette.secondary.light, // Selected text color
+    },
+  }));
+
   return (
     <Box key={item.title}>
       {' '}
@@ -147,23 +167,41 @@ function NavbarItems({ item, active, setActive }: any) {
       </CustomListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         {item.children.map((child: any) => (
-          <List
-            component="div"
-            disablePadding
-            onClick={() => handleActive(item.title, child.title)}
-          >
+          <List component="div" disablePadding>
             <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} gap={1}>
               <CustomListSubItemButton
                 sx={{ pl: 4 }}
+                onClick={() => handleActive(item.title, child.title)}
                 selected={active.item == item.title && active.subItem == child.title}
               >
                 <ListItemText primary={child.title} />
               </CustomListSubItemButton>
-              <IconButton>
+              <IconButton aria-describedby={id} onClick={handleOpenPopover}>
                 <Icon>
                   <MoreVertIcon />
                 </Icon>
               </IconButton>
+              <Popover
+                id={id}
+                anchorEl={anchorEl}
+                open={openPopover}
+                onClose={handleClosePopover}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <CustomList disablePadding>
+                  <CustomListItemText>Pin Chat on Top</CustomListItemText>
+                  <CustomListItemText>Archive</CustomListItemText>
+                  <CustomListItemText>Delete</CustomListItemText>
+                  <CustomListItemText>Rename</CustomListItemText>
+                </CustomList>
+              </Popover>
             </Stack>
           </List>
         ))}

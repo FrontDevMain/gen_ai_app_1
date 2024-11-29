@@ -81,10 +81,11 @@ const typography = {
   body1: {
     fontWeight: 500,
     lineHeight: 1.2,
-    fontSize: pxToRem(14),
+    fontSize: pxToRem(16),
   },
   body2: {
     lineHeight: 20 / 12,
+    fontWeight: 500,
     fontSize: pxToRem(13),
   },
   caption: {
