@@ -6,8 +6,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormProvider, { RHFTextField } from '../../components/hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import fetcher from 'src/utils/fetcher';
+
 import { LoadingButton } from '@mui/lab';
+import fetcher from 'src/api/fetcher';
 
 type FormValuesProps = {
   email: string;

@@ -1,4 +1,4 @@
-import { Button, FormHelperText, Stack, Typography } from '@mui/material';
+import { Button, FormHelperText, Link, Stack, Typography } from '@mui/material';
 //form
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -81,6 +81,18 @@ function VerifySignUpOtp() {
         <Button fullWidth size="medium" type="submit" variant="contained">
           Continue
         </Button>
+        <Typography textAlign={'center'} my={2}>
+          Already have an account?
+          <Link
+            variant="body2"
+            color="primary"
+            underline="none"
+            sx={{ cursor: 'pointer' }}
+            onClick={() => navigate('/')}
+          >
+            Login
+          </Link>
+        </Typography>
       </Stack>
     </FormProvider>
   );

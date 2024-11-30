@@ -11,9 +11,14 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { END_POINTS } from 'src/api/EndPoints';
+import fetcher from 'src/api/fetcher';
+import { useAuthContext } from 'src/auth/useAuthContext';
 import { Avatar } from 'src/components/avatar';
 
 function AccountPopover() {
+  const { logout } = useAuthContext();
+
   //openpopover
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleOpenPopover = (event: React.MouseEvent<HTMLButtonElement>) =>
@@ -45,6 +50,16 @@ function AccountPopover() {
       backgroundColor: theme.palette.secondary.light, // Selected text color
     },
   }));
+
+  const logoutUser = async () => {
+    try {
+      const Response = await fetcher.get(END_POINTS.AUTH.LOGOUT);
+      logout();
+      console.log(Response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Stack
@@ -85,7 +100,7 @@ function AccountPopover() {
         >
           <CustomList disablePadding>
             <CustomListItemText>Change Profile Picture</CustomListItemText>
-            <CustomListItemText>Logout</CustomListItemText>
+            <CustomListItemText onClick={logoutUser}>Logout</CustomListItemText>
             <CustomListItemText>Choose LLM</CustomListItemText>
           </CustomList>
         </Popover>

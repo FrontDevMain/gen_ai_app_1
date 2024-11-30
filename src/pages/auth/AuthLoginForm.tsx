@@ -15,11 +15,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormProvider, { RHFTextField } from '../../components/hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import google from '../../assets/login/google.svg.svg';
 import fb from '../../assets/login/fb.svg.svg';
-import fetcher from 'src/utils/fetcher';
+
 import { LoadingButton } from '@mui/lab';
+import fetcher from 'src/api/fetcher';
+import { END_POINTS } from 'src/api/EndPoints';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 type FormValuesProps = {
   email: string;
@@ -32,24 +34,12 @@ const IconStyle = {
 };
 
 function AuthLoginForm() {
+  const { login } = useAuthContext();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string()
-      .required('Email or mobile number is required')
-      .test(
-        'valid-email-or-mobile',
-        'Enter a valid email address or mobile number',
-        function (value) {
-          const isEmail = Yup.string().email().isValidSync(value);
-          const isMobile = Yup.string()
-            .matches(/^[0-9]{10}$/, 'Invalid mobile number')
-            .isValidSync(value);
-
-          return isEmail || isMobile;
-        }
-      ),
+    email: Yup.string().required('username is required'),
     password: Yup.string().required('Password is required'),
   });
 
@@ -73,17 +63,23 @@ function AuthLoginForm() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       const body = new URLSearchParams();
-      body.append('grant_type', 'password'); // Replace if another grant type is needed
       body.append('username', data.email);
       body.append('password', data.password);
-      body.append('scope', ''); // Optional: Add a specific scope if required
-      body.append('client_id', 'YOUR_CLIENT_ID'); // Replace with your client ID
-      body.append('client_secret', 'YOUR_CLIENT_');
 
-      const Response = await fetcher.post('auth/login', body);
-      console.log(Response);
+      const Response = await fetcher.post(END_POINTS.AUTH.LOGIN, body);
+      login(data.email, data.password);
+      navigate('/auth');
     } catch (err) {
       console.log(err.detail);
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    try {
+      const Response = await fetcher.get(END_POINTS.AUTH.LOGIN_WITH_GOOGLE);
+      console.log(Response);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -157,7 +153,7 @@ function AuthLoginForm() {
 
       <Divider>Or continue with</Divider>
       <Stack my={1} flexDirection={'row'} gap={1} justifyContent={'center'}>
-        <img src={google} alt="login with google" style={IconStyle} />
+        <img src={google} alt="login with google" style={IconStyle} onClick={loginWithGoogle} />
         <img src={fb} alt="login with facebook" style={IconStyle} />
       </Stack>
     </FormProvider>

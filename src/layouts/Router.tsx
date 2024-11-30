@@ -9,12 +9,28 @@ import AuthSignUpDetails from 'src/pages/auth/AuthSignUpDetails';
 import VerifyForgotPasswordOtp from 'src/pages/auth/VerifyForgotPasswordOtp';
 import AuthNewPassword from 'src/pages/auth/AuthNewPassword';
 import DashboardLayout from './DashboardLayout';
+import AuthGaurd from 'src/auth/AuthGaurd';
+import GuestGaurd from 'src/auth/GuestGaurd';
 
 function Router() {
   return (
     <Routes>
-      <Route path="/auth" element={<DashboardLayout />} />
-      <Route path="/" element={<GuestLayout />}>
+      <Route
+        path="/auth"
+        element={
+          <AuthGaurd>
+            <DashboardLayout />
+          </AuthGaurd>
+        }
+      />
+      <Route
+        path="/"
+        element={
+          <GuestGaurd>
+            <GuestLayout />
+          </GuestGaurd>
+        }
+      >
         <Route index element={<AuthLoginForm />} />
         <Route path="/signup" element={<AuthSignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
